@@ -97,6 +97,22 @@ class MatHashMap[K, V] {
   }
 
   /**
+   * Checks whether hash map is empty or not
+   *
+   * @return  true if hash map is empty, false otherwise
+   */
+  def isEmpty: Boolean = count == 0
+
+  /**
+   * Checks whether hash map contains an item with given key or not
+   *
+   * @param key Key of the item
+   *
+   * @return    true if hash map contains an item with given key, false otherwise
+   */
+  def contains(key: K): Boolean = get(key).isDefined
+
+  /**
    * Gets the bucket index corresponding to the given key
    *
    * @param key Key for which to find a bucket index
