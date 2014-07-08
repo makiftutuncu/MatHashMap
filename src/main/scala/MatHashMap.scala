@@ -9,8 +9,7 @@ class MatHashMap[K, V] {
   private val BUCKET_SIZE: Int = 8192
 
   // Internal array to hold the items, initialized as empty items
-  private val buffer: Array[MatHashMapNode[K, V]] = new Array[MatHashMapNode[K, V]](BUCKET_SIZE)
-  for (i <- 0 until BUCKET_SIZE) buffer(i) = MatEmptyItem
+  private val buffer: Array[MatHashMapNode[K, V]] = Array.fill(BUCKET_SIZE) { MatEmptyItem }
 
   /** Number of items in the hash map */
   var count = 0
@@ -243,9 +242,9 @@ sealed trait MatHashMapNode[+K, +V]
  * @tparam K    Type of the keys
  * @tparam V    Type of the values
  */
-case class MatItem[K, V](key: K, value: V, var next: MatHashMapNode[K, V]) extends MatHashMapNode[K, V]
+private case class MatItem[K, V](key: K, value: V, var next: MatHashMapNode[K, V]) extends MatHashMapNode[K, V]
 
 /**
  * An empty item to use in the hash map
  */
-case object MatEmptyItem extends MatHashMapNode[Nothing, Nothing]
+private case object MatEmptyItem extends MatHashMapNode[Nothing, Nothing]
