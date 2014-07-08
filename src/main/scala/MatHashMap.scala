@@ -55,6 +55,15 @@ class MatHashMap[K, V] {
    *
    * @return    Value of item with given key optionally
    */
+  def apply(key: K): Option[V] = get(key)
+
+  /**
+   * Gets the value of item with given key from the hash map
+   *
+   * @param key Key of the item
+   *
+   * @return    Value of item with given key optionally
+   */
   def get(key: K): Option[V] = {
     val bucketIndex: Int = getBucketIndex(key)
     val item: MatHashMapNode[K, V] = buffer(bucketIndex)
@@ -110,6 +119,9 @@ class MatHashMap[K, V] {
    * @return    true if hash map contains an item with given key, false otherwise
    */
   def contains(key: K): Boolean = get(key).isDefined
+
+  override def toString: String =
+    buffer.filterNot {case MatEmptyItem => true; case _ => false}.map {bucket => s"[$bucket]"}.mkString("[", ", ", "]")
 
   /**
    * Gets the bucket index corresponding to the given key
@@ -242,7 +254,15 @@ sealed trait MatHashMapNode[+K, +V]
  * @tparam K    Type of the keys
  * @tparam V    Type of the values
  */
-private case class MatItem[K, V](key: K, value: V, var next: MatHashMapNode[K, V]) extends MatHashMapNode[K, V]
+private case class MatItem[K, V](key: K, value: V, var next: MatHashMapNode[K, V]) extends MatHashMapNode[K, V] {
+  override def toString: String = {
+    val item: String = s""""$key": "$value""""
+    next match {
+      case MatEmptyItem => s"{$item}"
+      case _ => s"{$item}, $next"
+    }
+  }
+}
 
 /**
  * An empty item to use in the hash map
