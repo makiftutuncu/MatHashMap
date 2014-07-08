@@ -120,6 +120,11 @@ class MatHashMap[K, V] {
    */
   def contains(key: K): Boolean = get(key).isDefined
 
+  /**
+   * Represents the hash map as a string
+   *
+   * @return  A string representation of the hash map
+   */
   override def toString: String =
     buffer.filterNot {case MatEmptyItem => true; case _ => false}.map {bucket => s"[$bucket]"}.mkString("[", ", ", "]")
 
