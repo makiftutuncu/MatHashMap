@@ -125,8 +125,13 @@ class MatHashMap[K, V] {
    *
    * @return  A string representation of the hash map
    */
-  override def toString: String =
-    buffer.filterNot {case MatEmptyItem => true; case _ => false}.map {bucket => s"[$bucket]"}.mkString("[", ", ", "]")
+  override def toString: String = {
+    val stringBuilder: StringBuilder = buffer.foldLeft(new StringBuilder("[")) {
+      case (sB, MatEmptyItem) => sB
+      case (sB, bucket @ MatItem(_, _, _)) => sB.append(s"[$bucket], ")
+    }
+    stringBuilder.substring(0, if(stringBuilder.length > 2) stringBuilder.length - 2 else 1) + "]"
+  }
 
   /**
    * Gets the bucket index corresponding to the given key
